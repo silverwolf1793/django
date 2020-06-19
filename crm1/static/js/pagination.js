@@ -1,36 +1,38 @@
 class Paginator{
-    constructor(range,activeNumber,displayNumberLimit,paginatorId){
+    constructor(){
+    }
+
+    configure(start,end,activeNumber,displayNumberLimit,paginatorId){
         if (
-            range == undefined ||
+            start == undefined ||
+            end == undefined ||
             activeNumber == undefined ||
             displayNumberLimit == undefined ||
             paginatorId == undefined 
         )
             throw Error("Wrong arguments!")
+
         this.active = activeNumber
         this.displayNumberLimit = displayNumberLimit
         this.divAnchor = document.getElementById(paginatorId) 
-        this.divAnchor.innerHTML = ""
         this.divAnchor.classList.add("paginator")
-        this.range = this.rangeStringToArray(range)
+        
+        this.start = start
+        this.end = end
     }
     
-    rangeStringToArray (range){
-        let buffer = range.replace("range(","").replace(")","")
-        let result = buffer.split(',')
-        return [parseInt(result[0]), parseInt(result[1])]
-    }
+
 
     load(){
-        this.divAnchor.innerHTML += "<div class='arrow left'></div>"
-        if (this.range[1] <= this.displayNumberLimit){            
-            for(let i = this.range[0]; i<= this.range[1] -1; i++){
+        this.divAnchor.innerHTML = "<div class='arrow left' id='prev'></div>"
+        if (this.end <= this.displayNumberLimit){            
+            for(let i = this.start; i<= this.end; i++){
                 if (i != this.active)
-                    this.divAnchor.innerHTML += "<a href='./?page="+i+"' class='btn btn-secondary'>"+i+"</a>"
+                    this.divAnchor.innerHTML += "<div data-tag="+i+" href='#' onClick='paginatorUpdate(this)' class='inactive'>"+i+"</div>"
                 else
-                    this.divAnchor.innerHTML += "<div class='active'>"+i+"</div>"
+                    this.divAnchor.innerHTML += "<div class='active' id='active'>"+i+"</div>"
             }
         }
-        this.divAnchor.innerHTML += "<div class='arrow right'></div>"
+        this.divAnchor.innerHTML += "<div class='arrow right' id='prev'></div>"
     }
 } 

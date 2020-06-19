@@ -29,13 +29,26 @@ body{
     padding-right: 1em;
 }
 
-.paginator .active{
-    background-color: #212529;
+.paginator .inactive{
+    background-color: #6f7479;
     color: white;
     font-style: bold;
     border-radius: .25rem;
     padding-left: 1em;
     padding-right: 1em;
+    line-height: 1.5;
+    font-weight: 400;
+    cursor: pointer;
+}
+
+.paginator .active{
+    background-color: #212529;
+    cursor: default;
+    color: white;
+    font-style: bold;
+    border-radius: .25rem;
+    padding-left: 1.2em;
+    padding-right: 1.2em;
     line-height: 1.5;
     font-weight: 400;
 }
