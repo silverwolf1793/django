@@ -1,0 +1,86 @@
+{% extends 'common/main.html' %}
+
+{% block content %}
+    {% include 'dashboard/status.html' %}
+    <br>
+    <div class="row">
+        <div class="col-md-5">
+            <h5>Custumers</h5>
+            <hr>
+            <div class="card card-body">
+                <a href="" class="btn btn-primary btn-sm btn-block">
+                    Create Custumer
+                </a>
+                <table class="table table-sm">
+                    <tr>
+                        <th>Open</th>
+                        <th>Custumer</th>
+                        <th>Orders</th>
+                    </tr>
+                    {% for custumer in custumers %}
+                        <tr>
+                            <td><a href="{% url 'custumer' custumer.id %}"  class="btn btn-sm btn-info">View</a></td>
+                            <td>{{custumer.name}}</td>
+                            <td>{{custumer.phone}}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        <div class="col-md-7">
+            <h5>Last 5 Orders</h5>
+            <hr>
+            <div class="card card-body">
+                <div id="paginator">
+                </div>
+                <table class="table table-sm">
+                    <tr>
+                        <th>Product</th>
+                        <th>Date Ordered</th>
+                        <th>Status</th>
+                        <th>Update</th>
+                        <th>Remove</th>
+                    </tr>
+                    {% for order in orders %}
+                        <tr>
+                            <td>{{order.product}}</td>
+                            <td>{{order.date_created}}</td>
+                            <td>{{order.status}}</td>
+                            <td><a href="{% url 'update_order' order.id '-1' %}" class="btn btn-sm btn-info">Update</a></td>
+                            <td><a href="{% url 'delete_order' order.id '-1' %}" class="btn btn-sm btn-danger">Delete</a></td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+    <script>  
+        function paginatorRange(range){
+            let buffer = range.replace("range(","").replace(")","")
+            let result = buffer.split(',')
+            return [parseInt(result[0]), parseInt(result[1])]
+        }
+
+        let range = paginatorRange("{{orders.paginator.page_range}}" )
+        let current = {{orders.number}}
+        let limit = {{paging_range}}
+
+        var paginator = document.getElementById('paginator')
+        let selectors = document.createElement('div')
+        selectors.classList.add("paginator")
+        selectors.innerHTML = ""
+        if (range[1] <= limit){
+            selectors.innerHTML += "<div class='arrow left'></div>"
+            for(i = range[0]; i<=range[1] -1; i++){
+                if (i != current)
+                    selectors.innerHTML += "<a href='./?page="+i+"' class='btn btn-secondary'>"+i+"</a>"
+                else
+                    selectors.innerHTML += "<div class='active'>"+i+"</div>"
+            }
+             selectors.innerHTML += "<div class='arrow right'></div>"
+        }
+        paginator.appendChild(selectors)
+
+        console.log(range,current)
+    </script>
+{% endblock content %}
